@@ -8,4 +8,4 @@ def play():
     sound.play()
 
 def stop():
-    sound.stop()
+    sound.fadeout(100)

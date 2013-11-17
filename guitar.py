@@ -13,4 +13,4 @@ def play(index):
 
 def stop():
     for chord in chords:
-        chord.stop()
+        chord.fadeout(100)
