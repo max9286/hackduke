@@ -16,5 +16,5 @@ def play(chord):
 
 
 def stop():
-    in_chord.stop()
+    in_chord.fadeout(100)
     out_chord.fadeout(100)
