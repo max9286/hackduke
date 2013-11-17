@@ -45,7 +45,7 @@ def sine(frequency, length, rate):
 	return numpy.sin(numpy.arange(length) * factor)
 
 
-def play_tone(stream, end, ther, length=0.5, rate=44100):
+def play_tone(stream, end, ther, length=0.1, rate=44100):
 	while not end.is_set():
 		chunks = []
 		chunks.append(sine(ther.freq, length, rate))
