@@ -4,7 +4,7 @@ import pyaudio
 import time
 import threading
 
-class Tone:
+class Theremin:
 
 	def __init__(self):
 		self.p = pyaudio.PyAudio()
@@ -16,12 +16,14 @@ class Tone:
 
 	def start(self):
 		self.event = threading.Event()
-		self.thread = threading.Thread(name="play_tone", target=play_tone, args=(self.stream,self.event,))
+		self.thread = threading.Thread(name="play_tone", target=play_tone, args=(self.stream,self.event,self))
 		self.thread.start()
-		self.event.wait()
-
+		
 	def stop(self):
 		self.event.set()
+
+	def set_freq(self,freq):
+		self.freq = freq
 
 	def close(self):
 		self.stream.close()
@@ -34,19 +36,22 @@ def sine(frequency, length, rate):
 	return numpy.sin(numpy.arange(length) * factor)
 
 
-def play_tone(stream, end, frequency=440, length=1, rate=44100):
-	print "playing tone"
-	chunks = []
-	chunks.append(sine(frequency, length, rate))
-
-	chunk = numpy.concatenate(chunks) * 0.25
-
-	stream.write(chunk.astype(numpy.float32).tostring())
-
+def play_tone(stream, end, ther, length=0.5, rate=44100):
+	while not end.is_set():
+		chunks = []
+		chunks.append(sine(ther.freq, length, rate))
+		chunk = numpy.concatenate(chunks) * 0.25
+		stream.write(chunk.astype(numpy.float32).tostring())
 
 if __name__ == '__main__':
-	t = Tone()
+	t = Theremin()
 	t.start()
+	time.sleep(0.5)
+	t.set_freq(440)
+	time.sleep(1)
+	t.set_freq(470)
+	time.sleep(0.3)
+	t.set_freq(440)
 	time.sleep(1)
 	t.stop()
 	t.close()
