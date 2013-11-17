@@ -100,8 +100,8 @@ def calibration_complete(src, id, status):
 
 def lost_user(src, id):
     print "--- User {} lost." .format(id)
-    if allUsers[id]['instrument'] == 'theremin':
-        tmn.stop()
+    # if allUsers[id]['instrument'] == 'theremin':
+    #     tmn.stop()
 def magnitude(v):
     return math.sqrt(sum(v[i]*v[i] for i in range(len(v))))
 
@@ -152,6 +152,11 @@ while True:
     finalImage.save('asd.png')
     finalImage = pygame.image.load('asd.png')
     screen.blit(finalImage,(0,0))
+
+    cymbal_image = pygame.image.load("images/cymbal.png")
+    tom_image = pygame.image.load("images/tom.png")
+    shake_image = pygame.image.load("images/shake.png")
+    snare_image = pygame.image.load("images/snare.png")
 
 
     # if instrument == 'accordian':
@@ -288,11 +293,30 @@ while True:
 
 
             if instrument == 'drum' or instrument == 'drums':
+
                 d1 = [(50,-70),(125,-70)]
                 d2 = [(-50,-130),(30,-130)]
-                d3 = [(-50,-80),(-155,-80)]
+                d3 = [(-155,-80),(-50,-80)]
                 CRASH = [(125,-130),(225,-130)]
                 drumss = [d1, d2, d3, CRASH]
+                
+                # draw the images for each drum
+                cp = add(KPNORMAL[:2], (CRASH[0][0], CRASH[0][1]-40))
+                cymbal_bounds = pygame.Rect(cp[0],cp[1],120,50)
+                screen.blit(cymbal_image, cymbal_bounds)
+
+                shp = add(KPNORMAL[:2], (d1[0][0], d1[0][1]-40))
+                shake_bounds = pygame.Rect(shp[0],shp[1],120,50)
+                screen.blit(shake_image, shake_bounds)
+
+                sp = add(KPNORMAL[:2], (d2[0][0], d2[0][1]-20))
+                snare_bounds = pygame.Rect(sp[0],sp[1],120,50)
+                screen.blit(snare_image, snare_bounds)
+
+                bp = add(KPNORMAL[:2], (d3[0][0], d3[0][1]-20))
+                bass_bounds = pygame.Rect(bp[0],bp[1],120,50)
+                screen.blit(tom_image, bass_bounds)
+
 
                 for drum in drumss:
                     if intersect([LHnormalX, LHnormalY], [allUsers[id][oldLX],allUsers[id][oldLY]], add(KPNORMAL[:2],drum[0]),add(KPNORMAL[:2],drum[1])):
@@ -317,7 +341,7 @@ while True:
                             else:
                                 drums.play(3)  
 
-                    pygame.draw.line(screen, (255,0,0), add(KPNORMAL[:2],drum[0]),add(KPNORMAL[:2],drum[1]), 5)
+                    #pygame.draw.line(screen, (255,0,0), add(KPNORMAL[:2],drum[0]),add(KPNORMAL[:2],drum[1]), 5)
                 if time.time() - allUsers[id]['time'] > .05:
                     allUsers[id][oldLX] = LHnormalX
                     allUsers[id][oldLY] = LHnormalY

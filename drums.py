@@ -19,7 +19,7 @@ drums.append(pygame.mixer.Sound(os.path.join(path, 'cymbal.wav')))
 drums.append(pygame.mixer.Sound(os.path.join(path, 'bass.wav')))
 
 def play(drum):
-    	drums[drum+1].play()
+    	drums[drum].play()
 	pygame.time.wait(10)
 	drums[drum].play()
 def stop():
