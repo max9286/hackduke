@@ -5,7 +5,7 @@ pygame.mixer.init()
 
 path = "sample_generator/instruments/violin/"
 notes = []
-for i in xrange(5):
+for i in xrange(12):
     sound = pygame.mixer.Sound(os.path.join(path, 'note%d.wav'%i))
     notes.append(sound)
 def play(index):
@@ -13,4 +13,4 @@ def play(index):
 
 def stop():
     for note in notes:
-        note.fadeout(500)
+        note.fadeout(750)
